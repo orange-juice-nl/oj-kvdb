@@ -16,7 +16,10 @@ var KeyValueDB = /** @class */ (function () {
         this.location = location;
         this.threshold = syncThreshold;
         try {
-            this.data = readJSON(this.location);
+            if (!fs.existsSync(this.location))
+                fs.writeFileSync(this.location, {});
+            else
+                this.data = readJSON(this.location);
         }
         catch (err) {
             console.error(err);
