@@ -1,4 +1,5 @@
 import * as fs from "fs"
+import * as path from "path"
 
 const readJSON = (location: string) =>
   JSON.parse(fs.readFileSync(location, { encoding: "utf-8" }))
@@ -20,8 +21,9 @@ export class KeyValueDB<T> {
     this.threshold = syncThreshold
 
     try {
+      fs.mkdirSync(path.dirname(this.location), { recursive: true })
       if (!fs.existsSync(this.location))
-        fs.writeFileSync(this.location, {})
+        writeJSON(this.location, {})
       else
         this.data = readJSON(this.location)
     } catch (err) {

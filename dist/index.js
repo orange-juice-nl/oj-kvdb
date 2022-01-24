@@ -1,6 +1,8 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
+exports.KeyValueDB = void 0;
 var fs = require("fs");
+var path = require("path");
 var readJSON = function (location) {
     return JSON.parse(fs.readFileSync(location, { encoding: "utf-8" }));
 };
@@ -16,8 +18,9 @@ var KeyValueDB = /** @class */ (function () {
         this.location = location;
         this.threshold = syncThreshold;
         try {
+            fs.mkdirSync(path.dirname(this.location), { recursive: true });
             if (!fs.existsSync(this.location))
-                fs.writeFileSync(this.location, {});
+                writeJSON(this.location, {});
             else
                 this.data = readJSON(this.location);
         }
